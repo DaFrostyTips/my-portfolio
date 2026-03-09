@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes pixel-idle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
+@keyframes pixel-blink-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  48% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  52% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes pixel-scanline-drift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: -140px 0, 0 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 93%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 93%;
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 93%;
+    --muted: 0 0% 11%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 20 82% 54%;
+    --accent-hover: 20 86% 59%;
+    --accent-pressed: 20 77% 48%;
+    --accent-foreground: 0 0% 5%;
+    --border: 0 0% 14%;
+    --ring: 20 86% 59%;
+    --radius: 0.25rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.3);
+    color: hsl(0 0% 98%);
+  }
+}
+
+@layer utilities {
+  .pixel-runner-overlay {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        hsl(var(--foreground) / 0.02) 0px,
+        hsl(var(--foreground) / 0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      linear-gradient(
+        to right,
+        hsl(var(--muted-foreground) / 0.025) 0%,
+        transparent 40%,
+        hsl(var(--muted-foreground) / 0.02) 100%
+      );
+    animation: pixel-scanline-drift 18s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-runner-overlay {
+    animation: none;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.012;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.007;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 320 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fineNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fineNoise)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0 0% 5%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 20%);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(0 0% 30%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
