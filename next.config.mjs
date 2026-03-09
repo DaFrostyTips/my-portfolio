@@ -15,6 +15,9 @@ const nextConfig = {
   },
   basePath: useProjectPagesBasePath ? `/${repositoryName}` : undefined,
   assetPrefix: useProjectPagesBasePath ? `/${repositoryName}/` : undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: useProjectPagesBasePath ? `/${repositoryName}` : '',
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
